@@ -17,3 +17,7 @@
 ### 상품 수정
 
 ![product_select_update.png](/docs/images/product_update.png)
+
+### 상품 삭제
+
+![product_select_delete.png](/docs/images/product_delete.png)

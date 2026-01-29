@@ -13,4 +13,5 @@ public interface ProductService {
     Optional<ProductDetailResponse> readById(Long productId);
     Page<ProductDetailResponse> readAll(Pageable pageable);
     ProductDetailResponse updateProduct(Long productId, ProductUpdateRequest productUpdateRequest);
+    void deleteProduct(Long productId);
 }

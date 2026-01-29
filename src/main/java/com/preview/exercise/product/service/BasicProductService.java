@@ -69,4 +69,13 @@ public class BasicProductService implements ProductService {
             throw new DuplicateProductException("이미 중복된 상품이 존재합니다.");
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteProduct(Long targetId) {
+        Product target = productRepository.findById(targetId)
+                .orElseThrow(() -> new ProductNotFoundException("삭제할 상품이 존재하지 않습니다."));
+        target.setIsDeleted(true);
+
+    }
 }
