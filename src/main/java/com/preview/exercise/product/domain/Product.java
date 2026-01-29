@@ -49,8 +49,8 @@ public class Product {
     @Lob
     private String description;
 
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    @Column(name = "is_existed")
+    private Boolean isExisted;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

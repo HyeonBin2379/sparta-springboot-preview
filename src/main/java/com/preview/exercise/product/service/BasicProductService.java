@@ -75,7 +75,6 @@ public class BasicProductService implements ProductService {
     public void deleteProduct(Long targetId) {
         Product target = productRepository.findById(targetId)
                 .orElseThrow(() -> new ProductNotFoundException("삭제할 상품이 존재하지 않습니다."));
-        target.setIsDeleted(true);
-
+        target.setIsExisted(null);
     }
 }

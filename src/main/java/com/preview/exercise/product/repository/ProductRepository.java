@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-    @Query("select p from Product p where p.id = :productId and p.isDeleted = false")
+    @Query("select p from Product p where p.id = :productId and p.isExisted = true")
     Optional<Product> findById(@Param("productId") Long id);
 }
