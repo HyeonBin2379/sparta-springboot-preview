@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,10 +37,18 @@ public class BasicProductService implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ProductDetailResponse> readProductById(Long productId) {
+    public Optional<ProductDetailResponse> readById(Long productId) {
         Optional<Product> foundProduct = productRepository.findProductById(productId);
 
         return foundProduct
+                .map(product -> modelMapper.map(product, ProductDetailResponse.class));
+    }
+
+    @Override
+    public Page<ProductDetailResponse> readAll(Pageable pageable) {
+        Page<Product> products = productRepository.findAll(pageable);
+
+        return products
                 .map(product -> modelMapper.map(product, ProductDetailResponse.class));
     }
 }
