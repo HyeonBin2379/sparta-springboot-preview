@@ -1,9 +1,11 @@
 package com.preview.exercise.product.service;
 
 import com.preview.exercise.product.advice.exception.DuplicateProductException;
+import com.preview.exercise.product.advice.exception.ProductNotFoundException;
 import com.preview.exercise.product.domain.Product;
 import com.preview.exercise.product.dto.ProductCreateRequest;
 import com.preview.exercise.product.dto.ProductDetailResponse;
+import com.preview.exercise.product.dto.ProductUpdateRequest;
 import com.preview.exercise.product.repository.ProductRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -38,17 +40,33 @@ public class BasicProductService implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public Optional<ProductDetailResponse> readById(Long productId) {
-        Optional<Product> foundProduct = productRepository.findProductById(productId);
+        Optional<Product> foundProduct = productRepository.findById(productId);
 
         return foundProduct
                 .map(product -> modelMapper.map(product, ProductDetailResponse.class));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<ProductDetailResponse> readAll(Pageable pageable) {
         Page<Product> products = productRepository.findAll(pageable);
 
         return products
                 .map(product -> modelMapper.map(product, ProductDetailResponse.class));
+    }
+
+    @Override
+    @Transactional
+    public ProductDetailResponse updateProduct(Long targetId, ProductUpdateRequest productUpdateRequest) {
+        Product target = productRepository.findById(targetId)
+                .orElseThrow(() -> new ProductNotFoundException("변경할 상품이 존재하지 않습니다."));
+        modelMapper.map(productUpdateRequest, target);
+
+        try {
+            Product result = productRepository.save(target);
+            return modelMapper.map(result, ProductDetailResponse.class);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateProductException("이미 중복된 상품이 존재합니다.");
+        }
     }
 }

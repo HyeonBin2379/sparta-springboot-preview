@@ -2,6 +2,7 @@ package com.preview.exercise.product.controller;
 
 import com.preview.exercise.product.dto.ProductCreateRequest;
 import com.preview.exercise.product.dto.ProductDetailResponse;
+import com.preview.exercise.product.dto.ProductUpdateRequest;
 import com.preview.exercise.product.service.ProductService;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,5 +54,14 @@ public class ProductController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(products.getContent());
+    }
+
+    @PutMapping("/products/{id}")
+    public ResponseEntity<ProductDetailResponse> updateProduct(
+            @PathVariable(name = "id") Long productId,
+            @RequestBody ProductUpdateRequest updateRequest) {
+        ProductDetailResponse updateResult = productService.updateProduct(productId, updateRequest);
+
+        return ResponseEntity.status(HttpStatus.OK).body(updateResult);
     }
 }
