@@ -2,7 +2,7 @@ package com.preview.exercise.product.service;
 
 import com.preview.exercise.product.advice.exception.DuplicateProductException;
 import com.preview.exercise.product.domain.Product;
-import com.preview.exercise.product.dto.ProductInfo;
+import com.preview.exercise.product.dto.ProductCreateRequest;
 import com.preview.exercise.product.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,8 @@ public class BasicProductService implements ProductService {
 
     @Override
     @Transactional
-    public Long saveProduct(ProductInfo productInfo) {
-        Product newProduct = modelMapper.map(productInfo, Product.class);
+    public Long saveProduct(ProductCreateRequest productCreateRequest) {
+        Product newProduct = modelMapper.map(productCreateRequest, Product.class);
         try {
             Product createdProduct = productRepository.save(newProduct);
             return createdProduct.getId();

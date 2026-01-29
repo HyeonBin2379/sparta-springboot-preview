@@ -1,6 +1,6 @@
 package com.preview.exercise.product.controller;
 
-import com.preview.exercise.product.dto.ProductInfo;
+import com.preview.exercise.product.dto.ProductCreateRequest;
 import com.preview.exercise.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +18,8 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/products")
-    public ResponseEntity<Long> addProduct(@RequestBody ProductInfo productInfo) {
-        Long newProductId = productService.saveProduct(productInfo);
+    public ResponseEntity<Long> addProduct(@RequestBody ProductCreateRequest productCreateRequest) {
+        Long newProductId = productService.saveProduct(productCreateRequest);
 
         if (newProductId == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

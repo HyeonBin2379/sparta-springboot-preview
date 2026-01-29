@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ProductInfo {
+public class ProductCreateRequest {
 
     private String name;
     private String category;
