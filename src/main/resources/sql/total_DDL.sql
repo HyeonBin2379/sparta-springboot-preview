@@ -13,5 +13,6 @@ create table products
 );
 
 alter table products add column description longtext;
+alter table products add constraint uk_name_category unique(name, category);
 
 commit;
