@@ -3,13 +3,15 @@ package com.preview.exercise.product.service;
 import com.preview.exercise.product.advice.exception.DuplicateProductException;
 import com.preview.exercise.product.domain.Product;
 import com.preview.exercise.product.dto.ProductCreateRequest;
+import com.preview.exercise.product.dto.ProductDetailResponse;
 import com.preview.exercise.product.repository.ProductRepository;
-import jakarta.transaction.Transactional;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -29,5 +31,14 @@ public class BasicProductService implements ProductService {
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateProductException("이미 등록된 상품이 존재합니다.");
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ProductDetailResponse> readProductById(Long productId) {
+        Optional<Product> foundProduct = productRepository.findProductById(productId);
+
+        return foundProduct
+                .map(product -> modelMapper.map(product, ProductDetailResponse.class));
     }
 }
