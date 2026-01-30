@@ -35,10 +35,10 @@
 * 재고 차감 기능에서는 아래의 조건부 update문을 사용
 
 ```java
-    // 조건부 update문 사용 -> 재고의 원자적 차감을 보장, 반환값은 재고 차감이 발생한 데이터 행 수(재고 차감 성공 시 1, 실패 시 0 반환)
-    @Modifying
-    @Query("update Product p set p.stock = p.stock - :quantity where p.id = :productId and p.stock >= :quantity")
-    int decreaseStock(@Param("productId") Long productId, Integer quantity);
+// 조건부 update문 사용 -> 재고의 원자적 차감을 보장, 반환값은 재고 차감이 발생한 데이터 행 수(재고 차감 성공 시 1, 실패 시 0 반환)
+@Modifying
+@Query("update Product p set p.stock = p.stock - :quantity where p.id = :productId and p.stock >= :quantity")
+int decreaseStock(@Param("productId") Long productId, @Param("quantity") Integer quantity);
 ```
 
 <details>
