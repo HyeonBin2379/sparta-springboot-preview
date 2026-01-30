@@ -26,9 +26,45 @@
 
 ## 주문 생성
 
-### 주문 생성(재고 차감 기능 적용 전)
+### 재고 차감 기능 적용 전
 
 ![order_create.png](/docs/images/order_create.png)
+
+### 재고 차감 기능 적용
+
+<details>
+
+  <summary>전체 테스트 과정 정리</summary>
+
+1. 재고 차감 테스트용 상품 추가(재고: 1)
+
+    ![order_create_2.png](/docs/images/order_create_2.png)
+
+2. 2명의 사용자가 동시에 상품을 주문
+    * 동시 실행을 위해 다음의 명령어를 인텔리제이 git bash에 입력해서 실행
+    * 동시에 2명이 주문하는 상황을 테스트하므로 curl 명령어를 사용하여 테스트
+   
+    ```bash
+    curl -s -X POST http://localhost:8080/api/orders \
+    -H "Content-Type: application/json" \
+    -d '{"productId": 3, "quantity": 1}' \
+    -w "\n[Request 1] Status: %{http_code}\n" & \
+    curl -s -X POST http://localhost:8080/api/orders \
+    -H "Content-Type: application/json" \
+    -d '{"productId": 3, "quantity": 1}' \
+    -w "\n[Request 2] Status: %{http_code}\n"
+    ```
+
+3. 1명만 주문 처리되는지 확인: 먼저 주문 성공하면 상태코드는 201, 늦게 주문해서 상품 재고가 없으면 상태코드는 409
+
+    ![order_create_5.png](/docs/images/order_create_5.png)
+4. 
+
+</details>
+
+* 실행 결과
+
+![order_create_5.png](/docs/images/order_create_5.png)
 
 ---
 

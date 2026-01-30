@@ -6,6 +6,7 @@ import com.preview.exercise.order.dto.OrderCreateRequest;
 import com.preview.exercise.order.dto.OrderDetailResponse;
 import com.preview.exercise.order.repository.OrderRepository;
 import com.preview.exercise.product.advice.exception.ProductNotFoundException;
+import com.preview.exercise.product.advice.exception.ProductOutOfStockException;
 import com.preview.exercise.product.domain.Product;
 import com.preview.exercise.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,12 @@ public class BasicOrderService implements OrderService {
     public Long createOrder(OrderCreateRequest request) {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new ProductNotFoundException("주문할 상품이 없습니다."));
+
+        // 재고가 부족하면 상품 재고 데이터에 변동 없음 -> 주문 생성 불가
+        int affected = productRepository.decreaseStock(request.getProductId(), request.getQuantity());
+        if (affected == 0) {
+            throw new ProductOutOfStockException("상품의 재고가 부족합니다.");
+        }
 
         Order newOrder = Order.builder()
                 .product(product)
