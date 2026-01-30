@@ -20,8 +20,7 @@ create table orders
 (
     id          bigint auto_increment primary key,
     quantity    int    not null default 0,
-    total_price int    not null default 0,
-    order_date  date   not null default (current_date),
+    order_date  datetime   not null default current_timestamp,
     product_id  bigint not null
 );
 

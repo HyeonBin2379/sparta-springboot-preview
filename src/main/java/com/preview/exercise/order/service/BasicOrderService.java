@@ -26,7 +26,6 @@ public class BasicOrderService implements OrderService {
         Order newOrder = Order.builder()
                 .product(product)
                 .quantity(request.getQuantity())
-                .totalPrice(product.getPrice() * request.getQuantity())
                 .build();
 
         return orderRepository.save(newOrder).getId();

@@ -16,7 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "orders")
@@ -35,12 +34,9 @@ public class Order {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name = "total_price", nullable = false)
-    private Integer totalPrice;
-
     @CreationTimestamp
     @Column(name = "order_date", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime orderDate;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
