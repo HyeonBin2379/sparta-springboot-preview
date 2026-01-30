@@ -13,11 +13,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
+// N+1 문제를 피하기 위해 BatchSize를 활용 - 현재 코드에서 페이지네이션 적용 및 기능 확장에도 유리
+@BatchSize(size = 20)
 @Entity
 @Table(name = "products")
 @Getter

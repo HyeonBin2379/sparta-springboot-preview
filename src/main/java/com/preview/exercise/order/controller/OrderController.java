@@ -3,7 +3,10 @@ package com.preview.exercise.order.controller;
 import com.preview.exercise.order.dto.OrderCreateRequest;
 import com.preview.exercise.order.dto.OrderDetailResponse;
 import com.preview.exercise.order.service.OrderService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,5 +35,12 @@ public class OrderController {
         OrderDetailResponse response = orderService.searchOrder(orderId);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<List<OrderDetailResponse>> searchAll(Pageable pageable) {
+        Page<OrderDetailResponse> orders = orderService.searchAll(pageable);
+
+        return ResponseEntity.status(HttpStatus.OK).body(orders.getContent());
     }
 }

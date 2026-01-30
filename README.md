@@ -33,7 +33,7 @@
 
 ## 주문 조회
 
-### 주문 조회(단건)
+### 주문 단건 조회
 
 * 주문 내역 조회 시 주문한 상품명도 함께 조회
 
@@ -43,3 +43,53 @@
 
 ![order_select_one_2.png](/docs/images/order_select_one_2.png)
 ![order_select_one_3.png](/docs/images/order_select_one_3.png)
+
+### 주문 목록 조회
+
+* 주문 생성 1회 진행 후 주문 목록 조회
+* Product 엔티티에 `@BatchSize(size = 20)`을 사용하여 주문 테이블에 조인된 상품의 데이터를 1개 쿼리로 일괄 조회(한번에 최대 20개까지 일괄 조회 가능)
+* 조회된 주문 내역은 3개이지만, 주문 목록을 조회 시 쿼리는 총 2회(orders 조회 + 조인된 products 일괄 조회)만 실행 -> N+1 문제 해소
+
+![order_select_list.png](/docs/images/order_select_list.png)
+![order_select_list_2.png](/docs/images/order_select_list_2.png)
+
+<details>
+
+  <summary>추가 주문 생성 + 주문 목록 조회 쿼리 실행 로그</summary>
+
+```
+Hibernate: 
+    insert 
+    into
+        orders
+        (order_date, product_id, quantity) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    select
+        o1_0.id,
+        o1_0.order_date,
+        o1_0.product_id,
+        o1_0.quantity 
+    from
+        orders o1_0 
+    limit
+        ?, ?
+Hibernate: 
+    select
+        p1_0.id,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.description,
+        p1_0.is_existed,
+        p1_0.name,
+        p1_0.price,
+        p1_0.stock,
+        p1_0.updated_at 
+    from
+        products p1_0 
+    where
+        p1_0.id in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+```
+
+</details>

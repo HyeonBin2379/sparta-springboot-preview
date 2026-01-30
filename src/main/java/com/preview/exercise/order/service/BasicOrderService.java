@@ -9,6 +9,8 @@ import com.preview.exercise.product.advice.exception.ProductNotFoundException;
 import com.preview.exercise.product.domain.Product;
 import com.preview.exercise.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,16 +41,31 @@ public class BasicOrderService implements OrderService {
         // 주문 내역 검색
         Order foundOrder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("주문 정보를 찾을 수 없습니다."));
+        return convertToResponse(foundOrder);
+    }
 
-        Product product = foundOrder.getProduct();
+    @Override
+    @Transactional(readOnly = true)
+    public Page<OrderDetailResponse> searchAll(Pageable pageable) {
+        Page<Order> orders = orderRepository.findAll(pageable);
+
+        if (orders.isEmpty()) {
+            throw new OrderNotFoundException("주문 목록을 조회할 수 없습니다.");
+        }
+
+        return orders.map(this::convertToResponse);
+    }
+
+    private OrderDetailResponse convertToResponse(Order order) {
+        Product product = order.getProduct();
 
         return OrderDetailResponse.builder()
-                .orderId(foundOrder.getId())
+                .orderId(order.getId())
                 .productName(product.getName())
                 .price(product.getPrice())
-                .quantity(foundOrder.getQuantity())
-                .totalPrice(product.getPrice() * foundOrder.getQuantity())
-                .orderDate(foundOrder.getOrderDate())
+                .quantity(order.getQuantity())
+                .totalPrice(product.getPrice() * order.getQuantity())
+                .orderDate(order.getOrderDate())
                 .build();
     }
 }
