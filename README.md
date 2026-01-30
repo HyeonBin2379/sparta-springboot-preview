@@ -21,3 +21,11 @@
 ### 상품 삭제
 
 ![product_select_delete.png](/docs/images/product_delete.png)
+
+---
+
+## 주문 생성 및 조회
+
+### 주문 생성(재고 차감 기능 적용 전)
+
+![order_create.png](/docs/images/order_create.png)

@@ -12,7 +12,21 @@ create table products
     updated_at  datetime     not null on update current_timestamp
 );
 
-ALTER TABLE products
-    ADD UNIQUE KEY uk_name_is_exist (name, is_existed);
+alter table products
+    add unique key uk_name_is_exist (name, is_existed);
+
+drop table if exists orders;
+create table orders
+(
+    id          bigint auto_increment primary key,
+    quantity    int    not null default 0,
+    total_price int    not null default 0,
+    order_date  date   not null default (current_date),
+    product_id  bigint not null
+);
+
+alter table orders
+    add constraint fk_product_id
+        foreign key (product_id) references products (id);
 
 commit;
