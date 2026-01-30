@@ -58,7 +58,6 @@
 3. 1명만 주문 처리되는지 확인: 먼저 주문 성공하면 상태코드는 201, 늦게 주문해서 상품 재고가 없으면 상태코드는 409
 
     ![order_create_5.png](/docs/images/order_create_5.png)
-4. 
 
 </details>
 
