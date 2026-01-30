@@ -38,6 +38,7 @@ public class Order {
     @Column(name = "order_date", nullable = false, updatable = false)
     private LocalDateTime orderDate;
 
+    // 1회 주문 시 상품은 1가지만 주문 가능
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;

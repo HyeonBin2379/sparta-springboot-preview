@@ -6,5 +6,5 @@ import com.preview.exercise.order.dto.OrderDetailResponse;
 public interface OrderService {
 
     Long createOrder(OrderCreateRequest orderCreateRequest);
-    OrderDetailResponse readOrder(Long orderId);
+    OrderDetailResponse searchOrder(Long orderId);
 }

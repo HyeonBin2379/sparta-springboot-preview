@@ -35,9 +35,11 @@ public class BasicOrderService implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public OrderDetailResponse readOrder(Long orderId) {
+    public OrderDetailResponse searchOrder(Long orderId) {
+        // 주문 내역 검색
         Order foundOrder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("주문 정보를 찾을 수 없습니다."));
+
         Product product = foundOrder.getProduct();
 
         return OrderDetailResponse.builder()

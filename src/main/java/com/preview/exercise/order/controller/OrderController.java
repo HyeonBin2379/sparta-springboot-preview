@@ -21,15 +21,15 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/orders")
-    public ResponseEntity<Long> createOrder(@RequestBody OrderCreateRequest request) {
+    public ResponseEntity<Long> create(@RequestBody OrderCreateRequest request) {
         Long orderId = orderService.createOrder(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
     }
 
     @GetMapping("/orders/{id}")
-    public ResponseEntity<OrderDetailResponse> readOrder(@PathVariable(name = "id") Long orderId) {
-        OrderDetailResponse response = orderService.readOrder(orderId);
+    public ResponseEntity<OrderDetailResponse> search(@PathVariable(name = "id") Long orderId) {
+        OrderDetailResponse response = orderService.searchOrder(orderId);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
